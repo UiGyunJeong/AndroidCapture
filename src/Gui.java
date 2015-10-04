@@ -131,6 +131,13 @@ public class Gui extends JFrame {
 			}
 		});
 		
+		bCapture.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				CapturedImage cap = new CapturedImage(cFileName.isSelected(), tFileName.getText(), sFileName.getValue().toString(), tSaveLoc.getText());
+			}
+		});
 		
 		
 		pDown.add(bOpen, "cell 1 0");
