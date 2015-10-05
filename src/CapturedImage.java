@@ -27,44 +27,18 @@ public class CapturedImage {
 	
 	private String makePath(String path, String fullName){
 		String fullPath=null;
-		fullPath = path+fullName+"\\";
+		fullPath = path+fullName;
 		return fullPath;
 	}
 	
 	private boolean captureImage(String fullPath, String fullName){
-		String[] captureCmd = new String[3];
-		String[] pullCmd = new String[3];
-		
-		captureCmd[0]=System.getProperty("user.dir") + "\\adb\\adb.exe shell";
-		captureCmd[1]="screencap -p /sdcard/";
-		captureCmd[2]=fullName;
-		
-		pullCmd[0] = "adb pull /sdcard/";
-		pullCmd[1] = fullName;
-		pullCmd[2] = " " + fullPath;
-		
-		System.out.println(captureCmd[0]);
-		
 		Process process = null;
-		
 		try {
-			process = Runtime.getRuntime().exec("adb shell screencap -p /sdcard/abc.png");
-			BufferedReader buffer = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			
-			System.out.println(buffer.readLine());
-			
-			Runtime.getRuntime().exec("adb pull /sdcard/abc.png c:\\abc.png");
-			
-			System.out.println(buffer.readLine());
-
+			process = Runtime.getRuntime().exec("adb shell screencap -p /sdcard/"+fullName);
+			Runtime.getRuntime().exec("adb pull /sdcard/"+ fullName + " "+fullPath);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		ProcessBuilder proc = new ProcessBuilder(captureCmd[0], captureCmd[1], captureCmd[2]);
-		proc.command(pullCmd);
 		//this.deleteImageFromPhone(p, fullName);
 		return true;
 	}
