@@ -1,10 +1,12 @@
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Scanner;
 
 
 public class DBManager {
@@ -14,26 +16,59 @@ public class DBManager {
 	private int number;
 	private String location;
 	
+	private OutputStream output = null;
+	private InputStream input = null;
+	private DataOutputStream doutput = null;
+	private DataInputStream dinput = null;
+	
 	public DBManager(String location, String name){
 		try {
-			OutputStream output = new FileOutputStream("file");
-			InputStream input = new FileInputStream("file");
+			output = new FileOutputStream("db.txt");
+			input = new FileInputStream("db.txt");
+			doutput = new DataOutputStream(output);
+			dinput = new DataInputStream(input);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private String readLine(){//read just one line
+		Scanner scanner = new Scanner(dinput);
+		return scanner.nextLine();
+	}
+	
+	private String read(String what){
+		try {
+			dinput.reset();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		switch(what){
+		case "name" :
+			break;
+		case "number" : 
+			readLine();//move cursor to nextline
+			break;
+		default : 
+			break;
+		}
+		return readLine();
 	}
-	
-	private void read(){
 		
-	}
-	
-	private void write(){
-		
+	private void write(String name, String number){
+		try {
+			doutput.writeUTF(name + "/n" + number + "/n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void create(){
+		
+	}
+	
+	private void closeStream(){
 		
 	}
 
