@@ -34,8 +34,8 @@ public class CapturedImage {
 	private boolean captureImage(String fullPath, String fullName){
 		Process process = null;
 		try {
-			process = Runtime.getRuntime().exec("adb shell screencap -p /sdcard/"+fullName);
-			Runtime.getRuntime().exec("adb pull /sdcard/"+ fullName + " "+fullPath);
+			process = Runtime.getRuntime().exec("adb shell screencap -p //sdcard//"+fullName);
+			Runtime.getRuntime().exec("adb pull //sdcard//"+ fullName + " "+fullPath);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -45,7 +45,7 @@ public class CapturedImage {
 	
 	private boolean deleteImageFromPhone(Process p, String fullName){
 		String[] deleteCmd = new String[3];
-		deleteCmd[0] = "rm /sdcard/";
+		deleteCmd[0] = "rm //sdcard//";
 		deleteCmd[1] = fullName;
 		deleteCmd[2] = ".png";
 		
