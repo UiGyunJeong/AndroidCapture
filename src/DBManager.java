@@ -1,5 +1,6 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,10 +12,11 @@ import java.util.Scanner;
 
 public class DBManager {
 
-	private String DBName;
-	private String name;
+	private String DBName = "db.txt";
+	private String fileName;
 	private int number;
 	private String location;
+	private boolean isNumberingUse;
 	
 	private OutputStream output = null;
 	private InputStream input = null;
@@ -22,17 +24,15 @@ public class DBManager {
 	private DataInputStream dinput = null;
 	
 	public DBManager(String location, String name){
+		createFile();
 		try {
-			output = new FileOutputStream("db.txt");
-			input = new FileInputStream("db.txt");
-			doutput = new DataOutputStream(output);
-			dinput = new DataInputStream(input);
+			createStream();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
-
-	private String readLine(){//read just one line
+	
+	private String readOneLine(){//read just one line
 		Scanner scanner = new Scanner(dinput);
 		return scanner.nextLine();
 	}
@@ -48,58 +48,41 @@ public class DBManager {
 		case "name" :
 			break;
 		case "number" : 
-			readLine();//move cursor to nextline
+			readOneLine();//move cursor to nextline
 			break;
+		case "isNumberUse" :
+			readOneLine();
+			readOneLine();
 		default : 
 			break;
 		}
-		return readLine();
+		return readOneLine();
 	}
 		
-	private void write(String name, String number){
+	private void write(String name, String number, boolean isNumberingUse){
 		try {
-			doutput.writeUTF(name + "/n" + number + "/n");
+			doutput.writeUTF(name + "/n" + number + "/n" + isNumberingUse);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void create(){
+	private void createFile(){
+		new File(DBName);
+	}
+	
+	private void createStream() throws FileNotFoundException{
+		output = new FileOutputStream(DBName);
+		input = new FileInputStream(DBName);
+		doutput = new DataOutputStream(output);
+		dinput = new DataInputStream(input);
+	}
+	
+	private void closeStream() throws IOException{
+		dinput.close();
+		doutput.close();
+		input.close();
+		output.close();
 		
-	}
-	
-	private void closeStream(){
-		
-	}
-
-	public String getDBName() {
-		return DBName;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getNumber() {
-		return number;
-	}
-
-	public void setNumber(int number) {
-		this.number = number;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	
-	
-	
+	}	
 }
